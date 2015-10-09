@@ -1,0 +1,79 @@
+bcf31# shu r[K[K[K run
+!
+! Big Cloud Fabric Appliance 3.1.0-SNAPSHOT (bcf-3.1.0 #84)
+! Current Time: 2015-09-24.18:02:33 
+!
+version 1.0
+
+! ntp
+ntp server 0.bigswitch.pool.ntp.org
+ntp server 1.bigswitch.pool.ntp.org
+ntp server 2.bigswitch.pool.ntp.org
+ntp server 3.bigswitch.pool.ntp.org
+
+! aaa
+aaa accounting exec default start-stop local
+
+! local
+local node
+  hostname bcf31
+  !
+  interface eth0
+    dns server 4.2.2.2
+    ip 10.1.84.96/24 gateway 10.1.84.1
+
+! user
+user admin
+  full-name 'Default admin'
+  hashed-password method=REMOVED
+
+! group
+group admin
+  associate user admin
+
+! controller
+controller
+  name bcf31
+  access-control
+    !
+    access-list api
+      1 permit from ::/0
+      2 permit from 0.0.0.0/0
+    !
+    access-list gui
+      1 permit from ::/0
+      2 permit from 0.0.0.0/0
+    !
+    access-list ns-api
+      1 permit from ::/0
+      2 permit from 0.0.0.0/0
+    !
+    access-list ssh
+      1 permit from ::/0
+      2 permit from 0.0.0.0/0
+
+! switch
+switch accton5710-1
+  fabric-role leaf
+  leaf-group leaf4
+  mac 70:72:cf:ea:17:65
+
+switch accton5710-2
+  fabric-role leaf
+  leaf-group leaf4
+  mac CC:37:AB:46:F3:90
+
+! fabric
+fabric
+  !
+  ipam switch
+    allocate
+    dns-server 10.1.84.1
+    gateway 10.1.84.1
+    ip-range 10.1.84.200 10.1.84.210 subnet-mask-length 24
+
+! tenant
+tenant multiswitch
+  segment 1
+    member switch accton5710-1 interface ethernet2 vlan untagged
+    member switch accton5710-2 interface ethernet1 vlan untagged

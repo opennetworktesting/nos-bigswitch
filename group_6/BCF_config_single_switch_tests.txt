@@ -1,0 +1,201 @@
+bcf31# sh run
+!
+! Big Cloud Fabric Appliance 3.1.0-SNAPSHOT (bcf-3.1.0 #84)
+! Current Time: 2015-09-24.15:04:18 
+!
+version 1.0
+
+! ntp
+ntp server 0.bigswitch.pool.ntp.org
+ntp server 1.bigswitch.pool.ntp.org
+ntp server 2.bigswitch.pool.ntp.org
+ntp server 3.bigswitch.pool.ntp.org
+
+! aaa
+aaa accounting exec default start-stop local
+
+! local
+local node
+  hostname bcf31
+  !
+  interface eth0
+    dns server 4.2.2.2
+    ip 10.1.84.96/24 gateway 10.1.84.1
+
+! user
+user admin
+  full-name 'Default admin'
+  hashed-password method=PBKDF2WithHmacSHA1,salt=6sn5LMvjIKBWZ8bfF6xCrg,rounds=10000,GRAt7-lWMwypxWJkRI3ZYtz5yrYSNeLAeIPvj6KnR-E
+
+! group
+group admin
+  associate user admin
+
+! controller
+controller
+  name bcf31
+  access-control
+    !
+    access-list api
+      1 permit from ::/0
+      2 permit from 0.0.0.0/0
+    !
+    access-list gui
+      1 permit from ::/0
+      2 permit from 0.0.0.0/0
+    !
+    access-list ns-api
+      1 permit from ::/0
+      2 permit from 0.0.0.0/0
+    !
+    access-list ssh
+      1 permit from ::/0
+      2 permit from 0.0.0.0/0
+
+! switch
+switch accton5710-1
+  fabric-role leaf
+  leaf-group leaf4
+  mac 70:72:cf:ea:17:65
+
+switch accton6712
+  fabric-role spine
+  mac cc:37:ab:34:83:e6
+
+switch accton6712-2
+  fabric-role leaf
+  leaf-group leaf2
+  mac CC:37:AB:34:84:68
+  interface ethernet1
+
+switch hp5712
+  fabric-role leaf
+  leaf-group leaf3
+  mac 48:0f:cf:ad:c1:70
+
+! fabric
+fabric
+  !
+  ipam switch
+    allocate
+    dns-server 10.1.84.1
+    gateway 10.1.84.1
+    ip-range 10.1.84.200 10.1.84.210 subnet-mask-length 24
+
+! tenant
+tenant systemlocal
+  segment 1112
+    member switch accton5710-1 interface ethernet11 vlan untagged
+    member switch accton5710-1 interface ethernet12 vlan untagged
+  segment 12
+    member switch accton5710-1 interface ethernet1 vlan untagged
+    member switch accton5710-1 interface ethernet2 vlan untagged
+  segment 1314
+    member switch accton5710-1 interface ethernet13 vlan untagged
+    member switch accton5710-1 interface ethernet14 vlan untagged
+  segment 1516
+    member switch accton5710-1 interface ethernet15 vlan untagged
+    member switch accton5710-1 interface ethernet16 vlan untagged
+  segment 1718
+    member switch accton5710-1 interface ethernet17 vlan untagged
+    member switch accton5710-1 interface ethernet18 vlan untagged
+  segment 1920
+    member switch accton5710-1 interface ethernet19 vlan untagged
+    member switch accton5710-1 interface ethernet20 vlan untagged
+  segment 2122
+    member switch accton5710-1 interface ethernet21 vlan untagged
+    member switch accton5710-1 interface ethernet22 vlan untagged
+  segment 2324
+    member switch accton5710-1 interface ethernet23 vlan untagged
+    member switch accton5710-1 interface ethernet24 vlan untagged
+  segment 2526
+    member switch accton5710-1 interface ethernet25 vlan untagged
+    member switch accton5710-1 interface ethernet26 vlan untagged
+  segment 2728
+    member switch accton5710-1 interface ethernet27 vlan untagged
+    member switch accton5710-1 interface ethernet28 vlan untagged
+  segment 2930
+    member switch accton5710-1 interface ethernet29 vlan untagged
+    member switch accton5710-1 interface ethernet30 vlan untagged
+  segment 3132
+    member switch accton5710-1 interface ethernet31 vlan untagged
+    member switch accton5710-1 interface ethernet32 vlan untagged
+  segment 3334
+    member switch accton5710-1 interface ethernet33 vlan untagged
+    member switch accton5710-1 interface ethernet34 vlan untagged
+  segment 34
+    member switch accton5710-1 interface ethernet3 vlan untagged
+    member switch accton5710-1 interface ethernet4 vlan untagged
+  segment 3536
+    member switch accton5710-1 interface ethernet35 vlan untagged
+    member switch accton5710-1 interface ethernet36 vlan untagged
+  segment 3738
+    member switch accton5710-1 interface ethernet37 vlan untagged
+    member switch accton5710-1 interface ethernet38 vlan untagged
+  segment 3940
+    member switch accton5710-1 interface ethernet39 vlan untagged
+    member switch accton5710-1 interface ethernet40 vlan untagged
+  segment 4142
+    member switch accton5710-1 interface ethernet41 vlan untagged
+    member switch accton5710-1 interface ethernet42 vlan untagged
+  segment 4344
+    member switch accton5710-1 interface ethernet43 vlan untagged
+    member switch accton5710-1 interface ethernet44 vlan untagged
+  segment 4546
+    member switch accton5710-1 interface ethernet45 vlan untagged
+    member switch accton5710-1 interface ethernet46 vlan untagged
+  segment 4748
+    member switch accton5710-1 interface ethernet47 vlan untagged
+    member switch accton5710-1 interface ethernet48 vlan untagged
+  segment 4950
+    member switch accton5710-1 interface ethernet49 vlan untagged
+    member switch accton5710-1 interface ethernet50 vlan untagged
+  segment 5152
+    member switch accton5710-1 interface ethernet51 vlan untagged
+    member switch accton5710-1 interface ethernet52 vlan untagged
+  segment 5354
+    member switch accton5710-1 interface ethernet53 vlan untagged
+    member switch accton5710-1 interface ethernet54 vlan untagged
+  segment 56
+    member switch accton5710-1 interface ethernet5 vlan untagged
+    member switch accton5710-1 interface ethernet6 vlan untagged
+  segment 78
+    member switch accton5710-1 interface ethernet7 vlan untagged
+    member switch accton5710-1 interface ethernet8 vlan untagged
+  segment 910
+    member switch accton5710-1 interface ethernet10 vlan untagged
+    member switch accton5710-1 interface ethernet9 vlan untagged
+  segment allonone
+    member switch accton6712-2 interface ethernet1 vlan untagged
+    member switch accton6712-2 interface ethernet10 vlan untagged
+    member switch accton6712-2 interface ethernet11 vlan untagged
+    member switch accton6712-2 interface ethernet12 vlan untagged
+    member switch accton6712-2 interface ethernet13 vlan untagged
+    member switch accton6712-2 interface ethernet14 vlan untagged
+    member switch accton6712-2 interface ethernet15 vlan untagged
+    member switch accton6712-2 interface ethernet16 vlan untagged
+    member switch accton6712-2 interface ethernet17 vlan untagged
+    member switch accton6712-2 interface ethernet18 vlan untagged
+    member switch accton6712-2 interface ethernet19 vlan untagged
+    member switch accton6712-2 interface ethernet2 vlan untagged
+    member switch accton6712-2 interface ethernet20 vlan untagged
+    member switch accton6712-2 interface ethernet21 vlan untagged
+    member switch accton6712-2 interface ethernet22 vlan untagged
+    member switch accton6712-2 interface ethernet23 vlan untagged
+    member switch accton6712-2 interface ethernet24 vlan untagged
+    member switch accton6712-2 interface ethernet25 vlan untagged
+    member switch accton6712-2 interface ethernet26 vlan untagged
+    member switch accton6712-2 interface ethernet27 vlan untagged
+    member switch accton6712-2 interface ethernet28 vlan untagged
+    member switch accton6712-2 interface ethernet29 vlan untagged
+    member switch accton6712-2 interface ethernet3 vlan untagged
+    member switch accton6712-2 interface ethernet30 vlan untagged
+    member switch accton6712-2 interface ethernet31 vlan untagged
+    member switch accton6712-2 interface ethernet32 vlan untagged
+    member switch accton6712-2 interface ethernet4 vlan untagged
+    member switch accton6712-2 interface ethernet5 vlan untagged
+    member switch accton6712-2 interface ethernet6 vlan untagged
+    member switch accton6712-2 interface ethernet7 vlan untagged
+    member switch accton6712-2 interface ethernet8 vlan untagged
+    member switch accton6712-2 interface ethernet9 vlan untagged
+bcf31# 
