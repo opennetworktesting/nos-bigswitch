@@ -22,11 +22,6 @@ local node
     dns server 4.2.2.2
     ip 10.1.84.96/24 gateway 10.1.84.1
 
-! user
-user admin
-  full-name 'Default admin'
-  hashed-password method=PBKDF2WithHmacSHA1,salt=6sn5LMvjIKBWZ8bfF6xCrg,rounds=10000,GRAt7-lWMwypxWJkRI3ZYtz5yrYSNeLAeIPvj6KnR-E
-
 ! group
 group admin
   associate user admin
